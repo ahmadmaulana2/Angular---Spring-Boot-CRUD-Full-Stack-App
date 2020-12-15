@@ -21,8 +21,9 @@ import javax.persistence.Table;
 public class Employee {
 
     @Id
+    @Column(name = "id", updatable = true, nullable = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -47,11 +48,11 @@ public class Employee {
         // this.idKota = idKota;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

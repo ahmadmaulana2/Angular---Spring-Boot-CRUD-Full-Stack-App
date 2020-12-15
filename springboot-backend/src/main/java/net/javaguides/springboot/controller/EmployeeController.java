@@ -9,14 +9,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import net.javaguides.springboot.model.Employee;
 import net.javaguides.springboot.repository.EmployeeRepository;
@@ -29,30 +32,22 @@ public class EmployeeController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @RequestMapping(method = RequestMethod.OPTIONS)
-    ResponseEntity<?> options() {
-      // @formatter:off
-	  return ResponseEntity.ok().allow(
-		       HttpMethod.GET,
-		       HttpMethod.POST,
-		       HttpMethod.HEAD,
-		       HttpMethod.OPTIONS,
-		       HttpMethod.PUT,
-		       HttpMethod.DELETE).
-		       build(); 
-	  // @formatter:on
-    }
-
     // get all employees
-    @GetMapping("/employees")
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/employees", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    // @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getAllEmployee() {
         return ResponseEntity.ok(this.employeeRepository.findAll());
     }
 
     // create employee rest api
-    @PostMapping("/employees")
-    public ResponseEntity<Employee> insert(@Validated @RequestBody Employee employee) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/employees", method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    // @PostMapping("/create-employee")
+    public ResponseEntity<Employee> insert(@RequestBody Employee employee) {
         // Employee save = this.employeeRepository.save(employee);
-        return ResponseEntity.ok(employee);
+        return ResponseEntity.ok(this.employeeRepository.save(employee));
     }
 }
