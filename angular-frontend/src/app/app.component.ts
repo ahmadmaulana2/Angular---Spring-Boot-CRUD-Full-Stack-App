@@ -9,6 +9,6 @@ export class AppComponent {
   title : string;
 
   constructor() {
-    this.title = 'angular-frontend';
+    this.title = 'Angular 10 Spring Boot CRUD Full Stack App';
   }
 }
